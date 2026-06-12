@@ -38,7 +38,7 @@ def render(locale, current):
     toggle_label = "Expand" if st.session_state.collapsed else "Collapse"
     if st.button(toggle_label, key='toggle'):
         st.session_state.collapsed = not st.session_state.collapsed
-        st.experimental_rerun()
+        st.rerun()
 
     st.markdown("<div class='sidebar-divider'></div>", unsafe_allow_html=True)
 

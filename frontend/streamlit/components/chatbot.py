@@ -56,7 +56,7 @@ def render(locale):
     st.markdown('<div class="chat-shell">', unsafe_allow_html=True)
     if st.button('Chat' if not st.session_state.chat_open else 'Close', key='chat_toggle'):
         st.session_state.chat_open = not st.session_state.chat_open
-        st.experimental_rerun()
+        st.rerun()
 
     if st.session_state.chat_open:
         st.markdown(

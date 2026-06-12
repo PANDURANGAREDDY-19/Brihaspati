@@ -35,7 +35,7 @@ def render(locale):
                 # mock response
                 resp = MOCK.get(text, 'Great question! Here is a helpful mock response to guide your practice.')
                 st.session_state.chat.append({'sender': locale['ai_tutor']['ai_label'], 'text': resp, 'ts': time.time()})
-                st.experimental_rerun()
+                st.rerun()
 
     with cols[1]:
         st.markdown("<div class='card'>", unsafe_allow_html=True)
@@ -44,5 +44,5 @@ def render(locale):
             if st.button(s, key=s):
                 st.session_state.chat.append({'sender': locale['ai_tutor']['user_label'], 'text': s, 'ts': time.time()})
                 st.session_state.chat.append({'sender': locale['ai_tutor']['ai_label'], 'text': MOCK.get(s,''), 'ts': time.time()})
-                st.experimental_rerun()
+                st.rerun()
         st.markdown("</div>", unsafe_allow_html=True)

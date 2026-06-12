@@ -64,7 +64,7 @@ def render_header(locale):
         active = st.session_state.page == item['page']
         if nav_cols[idx].button(item['label'], key=f"nav_{item['page']}", disabled=active):
             st.session_state.page = item['page']
-            st.experimental_rerun()
+            st.rerun()
 
 
 def main():
