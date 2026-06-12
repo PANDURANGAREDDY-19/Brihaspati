@@ -1,0 +1,79 @@
+{
+  "nav": {
+    "home": "డాష్‌బోర్డ్",
+    "ai_tutor": "AI తోటి",
+    "debugger": "స్మార్ట్ డీబగ్గర్",
+    "quiz_arena": "క్విజ్ అరీనా",
+    "challenges": "ఘటాంతాలు",
+    "code_review": "కోడ్ రివ్యూ స్టూడియో",
+    "settings": "సెట్టింగులు"
+  },
+  "home": {
+    "title": "AIతో కోడింగ్ నేర్చుకోండి",
+    "subtitle": "మీ వ్యక్తిగత కోడింగ్ మెంటార్.",
+    "start": "అరంభించు",
+    "explore": "ఫీచర్లను చూడండి",
+    "questions_solved": "ప్రమాధాలు పరిష్కరించబడినవి",
+    "quizzes_completed": "క్విజ్‌లను పూర్తి చేసినవి",
+    "problems_attempted": "ప్రాక్టీస్ సమస్యలు",
+    "code_reviews": "కోడ్ సమీక్షలు",
+    "feature_tutor": "కోడింగ్ ట్యూటర్",
+    "feature_debugger": "కోడ్ డీబగ్గర్",
+    "feature_quiz": "క్విజ్ జనరేటర్",
+    "feature_arena": "ప్రాక్టీస్ అరేణా",
+    "feature_reviewer": "కోడ్ రివ్య్యూయర్"
+  },
+  "ai_tutor": {
+    "title": "AI తోటి",
+    "subtitle": "మీ కోడింగ్ మెంటార్‌తో చాట్ చేయండి.",
+    "ai_label": "CodeMentor",
+    "user_label": "మీరు",
+    "welcome": "హాయ్ — నేను కాన్సెప్ట్‌స్‌ను వివరించగలను.",
+    "placeholder": "ఒక ప్రశ్న అడగండి...",
+    "send": "పంపండి",
+    "suggested": "సూచించిన ప్రశ్నలు",
+    "language": "ప్రోగ్రామింగ్ భాష"
+  },
+  "debugger": {
+    "title": "స్మార్ట్ డీబగ్గర్",
+    "subtitle": "కోడ్‌ను పేస్టు చేసి మాక్ డయాగ్నోస్టిక్స్‌ను పొందండి.",
+    "language": "భాష",
+    "editor_placeholder": "ఇక్కడ కోడ్ పేస్ట్ చేయండి...",
+    "analyze": "విశ్లేషించు",
+    "detected": "గుర్తించిన సమస్యలు",
+    "clean": "ప్రముఖ సమస్యలు కనబడలేదు."
+  },
+  "quiz_arena": {
+    "title": "క్విజ్ అరీనా",
+    "subtitle": "ప్రాక్టీస్ క్విజ్‌లను రూపొందించండి.",
+    "language": "భాష",
+    "topic": "విషయం",
+    "difficulty": "కష్టం",
+    "generate": "క్విజ్ రూపొందించు",
+    "correct": "సరైనది!",
+    "incorrect": "తప్పు."
+  },
+  "challenges": {
+    "title": "కోడింగ్ ఛాలెంజ్‌లు",
+    "subtitle": "ఇంటర్వ్యూ-స్టైల్ సమస్యలు.",
+    "input_format": "ఇన్పుట్ ఫార్మాట్",
+    "output_format": "ఆఉట్‌పుట్ ఫార్మాట్",
+    "sample_input": "నమూనా ఇన్పుట్",
+    "sample_output": "నమూనా ఔట్‌పుట్"
+  },
+  "review": {
+    "title": "కోడ్ రివ్యూ స్టూడియో",
+    "subtitle": "మాక్ రివ్యూ పొందటానికి కోడ్‌ను పేస్ట్ చేయండి.",
+    "paste": "కోడ్ పేస్ట్ చేయండి",
+    "analyze": "రివ్యూ",
+    "quality": "నాణ్యత స్కోర్",
+    "improvements": "సూచనలు"
+  },
+  "settings": {
+    "title": "సెట్టింగులు",
+    "subtitle": "మీ అనుభవాన్ని అనుకూలపరచండి.",
+    "language_label": "UI భాష",
+    "ai_provider": "AI ప్రొవైడర్",
+    "byok": "API కీ (BYOK)"
+  }
+}

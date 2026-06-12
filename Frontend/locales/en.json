@@ -1,0 +1,110 @@
+{
+  "nav": {
+    "dashboard": "🏠 Dashboard",
+    "learn_concepts": "📚 Learn Concepts",
+    "ai_coach": "💬 AI Coding Coach",
+    "bug_finder": "🐞 Bug Finder",
+    "quiz_lab": "🧠 Quiz Lab",
+    "challenges": "⚔️ Coding Challenges",
+    "progress_tracker": "📊 Progress Tracker",
+    "settings": "⚙️ Settings"
+  },
+  "dashboard": {
+    "welcome": "Welcome back, Future Software Engineer!",
+    "subtitle": "Your personal coding growth dashboard is ready.",
+    "concepts_learned": "Concepts Learned",
+    "challenges_completed": "Challenges Completed",
+    "quiz_accuracy": "Quiz Accuracy",
+    "coding_streak": "Coding Streak",
+    "hours_practiced": "Hours Practiced",
+    "hero_title": "AI Coding Teacher Assistant",
+    "hero_subtitle": "Learn, Practice, Debug, and Master Programming with AI.",
+    "start_learning": "Start Learning",
+    "explore_features": "Explore Features",
+    "questions_asked": "Questions Asked",
+    "quizzes_completed": "Quizzes Completed",
+    "challenges_solved": "Challenges Solved",
+    "code_reviews": "Code Reviews",
+    "learning_streak": "Learning Streak",
+    "recommended_path": "Recommended Learning Path",
+    "recent_activity": "Recent Activity",
+    "activity_desc": "Track your latest progress and stay motivated."
+  },
+  "learn_concepts": {
+    "title": "Learn Concepts",
+    "subtitle": "Browse curated concept cards to build your coding foundation.",
+    "choose_category": "Choose a category",
+    "view_concept": "Select a concept to explore",
+    "difficulty": "Difficulty",
+    "time": "Estimated time",
+    "common_mistakes": "Common mistakes",
+    "tips": "Tips"
+  },
+  "ai_coach": {
+    "title": "AI Coding Coach",
+    "subtitle": "Ask your personal coach a coding question and get instant guidance.",
+    "ai_label": "CodeGuru AI",
+    "user_label": "You",
+    "welcome_message": "Hi there! Ask me anything about coding, interviews, or architecture.",
+    "message_placeholder": "Type a coding question...",
+    "send_button": "Send",
+    "suggested_prompts": "Suggested prompts"
+  },
+  "quiz_lab": {
+    "correct": "Correct!",
+    "incorrect": "Incorrect. Try again."
+  },
+  "bug_finder": {
+    "title": "Bug Finder",
+    "subtitle": "Paste code to inspect and receive mock issue detection instantly.",
+    "choose_language": "Language",
+    "code_placeholder": "Paste your code here...",
+    "analyze_button": "Analyze Code",
+    "detected_issues": "Detected Issues",
+    "corrected_code": "Corrected Code",
+    "no_issues": "No major issues found. Nice work!"
+  },
+  "settings": {
+    "profile_name": "Name",
+    "learning_goal": "Learning Goal",
+    "preferred_language": "Preferred Language"
+  },
+  "quiz_lab": {
+    "title": "Quiz Lab",
+    "subtitle": "Generate practice quizzes across topics and difficulty levels.",
+    "topic": "Topic",
+    "difficulty": "Difficulty",
+    "number_of_questions": "Number of Questions",
+    "generate": "Generate Quiz"
+  },
+  "challenges": {
+    "title": "Coding Challenges",
+    "subtitle": "Explore challenge prompts that mirror real interview problems.",
+    "category": "Challenge category",
+    "input_format": "Input Format",
+    "output_format": "Output Format",
+    "constraints": "Constraints",
+    "sample_input": "Sample Input",
+    "sample_output": "Sample Output"
+  },
+  "progress_tracker": {
+    "title": "Progress Tracker",
+    "subtitle": "Visualize your learning momentum and skill development.",
+    "weekly_progress": "Weekly Progress",
+    "skill_distribution": "Skill Distribution",
+    "quiz_performance": "Quiz Performance",
+    "challenge_completion": "Challenge Completion"
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Customize language, provider, theme, and BYOK options.",
+    "language": "Language",
+    "ai_provider": "AI Provider",
+    "theme": "Theme",
+    "byok_title": "Bring Your Own Key",
+    "byok_desc": "Enter an API key to configure your provider settings. This is mock-only and not connected.",
+    "api_key": "API Key",
+    "save_button": "Save Settings",
+    "save_confirm": "Settings updated successfully."
+  }
+}

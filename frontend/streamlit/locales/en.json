@@ -1,0 +1,79 @@
+{
+  "nav": {
+    "home": "Dashboard",
+    "ai_tutor": "AI Tutor",
+    "debugger": "Smart Debugger",
+    "quiz_arena": "Quiz Arena",
+    "challenges": "Challenges",
+    "code_review": "Code Review Studio",
+    "settings": "Settings"
+  },
+  "home": {
+    "title": "Learn Coding with AI",
+    "subtitle": "Your personal coding mentor powered by AI.",
+    "start": "Start Learning",
+    "explore": "Explore Features",
+    "questions_solved": "Questions Solved",
+    "quizzes_completed": "Quizzes Completed",
+    "problems_attempted": "Practice Problems Attempted",
+    "code_reviews": "Code Reviews Generated",
+    "feature_tutor": "Coding Tutor",
+    "feature_debugger": "Code Debugger",
+    "feature_quiz": "Quiz Generator",
+    "feature_arena": "Practice Arena",
+    "feature_reviewer": "Code Reviewer"
+  },
+  "ai_tutor": {
+    "title": "AI Tutor",
+    "subtitle": "Chat with your coding mentor.",
+    "ai_label": "CodeMentor",
+    "user_label": "You",
+    "welcome": "Hi — I can explain concepts, review snippets, and guide practice.",
+    "placeholder": "Ask a coding question...",
+    "send": "Send",
+    "suggested": "Suggested Questions",
+    "language": "Programming language"
+  },
+  "debugger": {
+    "title": "Smart Debugger",
+    "subtitle": "Paste code and get smart, mock diagnostics.",
+    "language": "Language",
+    "editor_placeholder": "Paste code here...",
+    "analyze": "Analyze",
+    "detected": "Detected Issues",
+    "clean": "No major issues found."
+  },
+  "quiz_arena": {
+    "title": "Quiz Arena",
+    "subtitle": "Generate practice quizzes.",
+    "language": "Language",
+    "topic": "Topic",
+    "difficulty": "Difficulty",
+    "generate": "Generate Quiz",
+    "correct": "Correct!",
+    "incorrect": "Incorrect."
+  },
+  "challenges": {
+    "title": "Coding Challenges",
+    "subtitle": "Interview-style problems to practice.",
+    "input_format": "Input Format",
+    "output_format": "Output Format",
+    "sample_input": "Sample Input",
+    "sample_output": "Sample Output"
+  },
+  "review": {
+    "title": "Code Review Studio",
+    "subtitle": "Paste code to get a mock review.",
+    "paste": "Paste code",
+    "analyze": "Review",
+    "quality": "Quality Score",
+    "improvements": "Improvement Suggestions"
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Customize your experience.",
+    "language_label": "UI Language",
+    "ai_provider": "AI Provider",
+    "byok": "API Key (BYOK)"
+  }
+}
