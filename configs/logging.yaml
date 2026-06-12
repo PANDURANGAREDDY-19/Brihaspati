@@ -1,0 +1,51 @@
+version: 1
+disable_existing_loggers: false
+
+formatters:
+  standard:
+    format: "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+  detailed:
+    format: "%(asctime)s [%(levelname)s] %(name)s:%(lineno)d - %(message)s"
+
+handlers:
+  console:
+    class: logging.StreamHandler
+    level: INFO
+    formatter: standard
+    stream: ext://sys.stdout
+
+  file:
+    class: logging.handlers.RotatingFileHandler
+    level: DEBUG
+    formatter: detailed
+    filename: logs/brihaspati.log
+    maxBytes: 10485760
+    backupCount: 5
+
+  ollama:
+    class: logging.handlers.RotatingFileHandler
+    level: DEBUG
+    formatter: detailed
+    filename: logs/ollama.log
+    maxBytes: 5242880
+    backupCount: 3
+
+loggers:
+  brihaspati:
+    level: DEBUG
+    handlers: [console, file]
+    propagate: false
+
+  brihaspati.ollama:
+    level: DEBUG
+    handlers: [console, ollama]
+    propagate: false
+
+  uvicorn:
+    level: INFO
+    handlers: [console]
+    propagate: false
+
+root:
+  level: INFO
+  handlers: [console]

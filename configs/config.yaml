@@ -1,0 +1,54 @@
+app:
+  name: Brihaspati
+  version: 1.0.0
+  debug: false
+  secret_key: ${SECRET_KEY:-change-me}
+
+server:
+  host: ${HOST:-0.0.0.0}
+  port: ${PORT:-8000}
+  workers: ${WORKERS:-4}
+
+ollama:
+  host: ${OLLAMA_HOST:-http://localhost:11434}
+  default_model: ${OLLAMA_MODEL:-llama3.1:8b}
+  embedding_model: ${OLLAMA_EMBEDDING_MODEL:-nomic-embed-text}
+  timeout: ${OLLAMA_TIMEOUT:-120}
+
+agents:
+  coding_tutor:
+    model: llama3.1:8b
+    temperature: 0.3
+    system_prompt: configs/prompts/tutor_system_prompt.txt
+  code_reviewer:
+    model: codellama:7b
+    temperature: 0.1
+    system_prompt: configs/prompts/reviewer_system_prompt.txt
+  problem_solver:
+    model: llama3.1:8b
+    temperature: 0.4
+    system_prompt: configs/prompts/solver_system_prompt.txt
+  bilingual_agent:
+    model: llama3.1:8b
+    temperature: 0.2
+    system_prompt: configs/prompts/translator_system_prompt.txt
+
+rag:
+  vector_store_path: ${VECTOR_STORE_PATH:-./vector_db}
+  chunk_size: ${CHUNK_SIZE:-512}
+  chunk_overlap: ${CHUNK_OVERLAP:-64}
+  top_k: ${TOP_K_RETRIEVAL:-4}
+
+memory:
+  type: ${MEMORY_TYPE:-json}
+  ttl_hours: ${MEMORY_TTL_HOURS:-24}
+  max_history: ${MAX_CONVERSATION_HISTORY:-50}
+
+code_execution:
+  enabled: ${CODE_EXECUTION_ENABLED:-false}
+  timeout: ${CODE_EXECUTION_TIMEOUT:-10}
+  max_output_length: ${CODE_EXECUTION_MAX_OUTPUT_LENGTH:-4096}
+
+logging:
+  level: ${LOG_LEVEL:-INFO}
+  file: ${LOG_FILE:-logs/brihaspati.log}

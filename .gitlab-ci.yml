@@ -1,0 +1,70 @@
+stages:
+  - lint
+  - test
+  - build
+  - deploy
+
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+cache:
+  paths:
+    - .cache/pip/
+    - .venv/
+
+before_script:
+  - python -V
+  - pip install --upgrade pip
+  - pip install -r backend/requirements.txt
+
+ruff-lint:
+  stage: lint
+  script:
+    - pip install ruff
+    - ruff check backend/
+    - ruff format --check backend/
+
+mypy-typecheck:
+  stage: lint
+  script:
+    - pip install mypy
+    - mypy backend/ --ignore-missing-imports
+
+pytest:
+  stage: test
+  script:
+    - pip install pytest pytest-cov
+    - pytest tests/ --cov=backend/ --cov-report=term --cov-report=html --junitxml=report.xml
+  coverage: '/TOTAL.*\s+(\d+%)$/'
+  artifacts:
+    reports:
+      junit: report.xml
+    paths:
+      - htmlcov/
+    expire_in: 30 days
+
+secret-detection:
+  stage: test
+  script:
+    - pip install gitleaks
+    - gitleaks detect --source . --no-git -v
+  allow_failure: true
+
+docker-build:
+  stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA .
+    - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA $CI_REGISTRY_IMAGE:latest
+  only:
+    - main
+
+deploy:
+  stage: deploy
+  script:
+    - echo "Deployment steps go here"
+  only:
+    - main
+  when: manual
