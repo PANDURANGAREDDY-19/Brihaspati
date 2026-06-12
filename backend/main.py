@@ -10,6 +10,11 @@ from backend.api.routes.code import router as code_router
 from backend.api.dependencies import get_ollama_service
 
 logger = logging.getLogger("brihaspati")
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> pandu
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     logger.info(f"Starting {settings.app_name} v{settings.app_version}")
@@ -23,18 +28,32 @@ async def lifespan(app: FastAPI):
     await ollama.close()
     logger.info("Brihaspati shutdown complete")
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> pandu
 app = FastAPI(
     title=settings.app_name,
     version=settings.app_version,
     description="Bilingual Coding Assistant — Teach programming in Telugu and English",
     lifespan=lifespan,
 )
+<<<<<<< HEAD
 setup_cors(app)
+=======
+
+setup_cors(app)
+
+>>>>>>> pandu
 app.include_router(health_router)
 app.include_router(chat_router)
 app.include_router(teach_router)
 app.include_router(code_router)
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> pandu
 @app.get("/")
 async def root():
     return {
@@ -43,6 +62,11 @@ async def root():
         "docs": "/docs",
         "health": "/health",
     }
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> pandu
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(
@@ -50,4 +74,8 @@ if __name__ == "__main__":
         host=settings.host,
         port=settings.port,
         reload=settings.debug,
+<<<<<<< HEAD
     )
+=======
+    )
+>>>>>>> pandu

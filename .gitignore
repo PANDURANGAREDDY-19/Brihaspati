@@ -1,0 +1,66 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+.venv/
+venv/
+env/
+*.whl
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Vector DB
+vector_db/*.chroma
+vector_db/*.faiss
+vector_db/*.index
+vector_db/data/
+
+# Datasets processed
+datasets/**/processed/
+
+# Docker
+docker/data/
+
+# Logs
+*.log
+logs/
+log/
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+coverage/
+.coverage.*
+coverage.xml
+*.report
+
+# Config overrides
+configs/local.yaml
+configs/*.local.yaml
+
+# OS
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Project specific
+backend/**/*.sqlite3
+backend/**/*.db
+data/

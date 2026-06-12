@@ -1,0 +1,44 @@
+version: "3.8"
+
+services:
+  ollama:
+    build:
+      context: .
+      dockerfile: Dockerfile.ollama
+    container_name: brihaspati-ollama
+    volumes:
+      - ollama_data:/root/.ollama
+    ports:
+      - "11434:11434"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  api:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    container_name: brihaspati-api
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+      - OLLAMA_MODEL=llama3.1:8b
+      - VECTOR_STORE_PATH=/app/vector_db
+      - LOG_LEVEL=INFO
+      - DEBUG=false
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../vector_db:/app/vector_db
+      - ../configs:/app/configs
+      - ../data:/app/data
+    depends_on:
+      ollama:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  ollama_data:
