@@ -4,7 +4,13 @@
     "courses": "Courses",
     "dashboard": "Dashboard",
     "practice": "Practice",
-    "about": "About"
+    "about": "About",
+    "ai_tutor": "AI Tutor",
+    "code_review": "Code Review",
+    "challenges": "Challenges",
+    "debugger": "Debugger",
+    "quiz_arena": "Quiz Arena",
+    "settings": "Settings"
   },
   "home": {
     "title": "Learn Coding with AI",
@@ -24,7 +30,7 @@
   "ai_tutor": {
     "title": "AI Tutor",
     "subtitle": "Chat with your coding mentor.",
-    "ai_label": "CodeMentor",
+    "ai_label": "Brihaspati",
     "user_label": "You",
     "welcome": "Hi — I can explain concepts, review snippets, and guide practice.",
     "placeholder": "Ask a coding question...",
@@ -34,7 +40,7 @@
   },
   "debugger": {
     "title": "Smart Debugger",
-    "subtitle": "Paste code and get smart, mock diagnostics.",
+    "subtitle": "Paste code and get smart diagnostics.",
     "language": "Language",
     "editor_placeholder": "Paste code here...",
     "analyze": "Analyze",
@@ -61,10 +67,10 @@
   },
   "review": {
     "title": "Code Review Studio",
-    "subtitle": "Paste code to get a mock review.",
+    "subtitle": "Get AI-powered code review.",
     "paste": "Paste code",
     "analyze": "Review",
-    "quality": "Quality Score",
+    "quality": "Review Results",
     "improvements": "Improvement Suggestions"
   },
   "settings": {
@@ -73,5 +79,8 @@
     "language_label": "UI Language",
     "ai_provider": "AI Provider",
     "byok": "API Key (BYOK)"
+  },
+  "chat": {
+    "welcome": "Hello! I'm Brihaspati. Ask me about programming in English or Telugu!"
   }
 }

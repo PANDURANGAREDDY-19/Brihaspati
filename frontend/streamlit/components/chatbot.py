@@ -1,105 +1,82 @@
-import time
 import streamlit as st
-
-MOCK_REPLIES = [
-    {
-        'keywords': ['python', 'java', 'cplusplus', 'javascript', 'html', 'css', 'c++', 'c'],
-        'text': 'I can help you explore syntax, write sample code, or compare programming topics. What would you like to practice first?',
-    },
-    {
-        'keywords': ['grammar', 'vocabulary', 'speaking', 'writing', 'reading'],
-        'text': 'Let’s build your language skills with clear examples and practice questions. Which area should we focus on?',
-    },
-    {
-        'keywords': ['telugu', 'telugu grammar', 'spoken', 'reading'],
-        'text': 'Telugu learning is fun with structured exercises. I can help you practice reading, writing, and vocabulary.',
-    },
-]
-
-
-def ensure_chat_state(locale):
-    if 'chat_open' not in st.session_state:
-        st.session_state.chat_open = False
-    if 'chat_messages' not in st.session_state:
-        st.session_state.chat_messages = [
-            {
-                'sender': 'bot',
-                'text': locale.get('chat', {}).get('welcome', "Hello! I'm CodeMentor AI. How can I help you learn Programming, English, or Telugu today?"),
-                'time': time.strftime('%I:%M %p'),
-            }
-        ]
-    if 'chat_input' not in st.session_state:
-        st.session_state.chat_input = ''
-
-
-def get_reply(message: str) -> str:
-    lower = message.lower()
-    for item in MOCK_REPLIES:
-        if any(keyword in lower for keyword in item['keywords']):
-            return item['text']
-    return 'That sounds great. I can guide you with course recommendations, practice suggestions, and quick concept explanations. What would you like to do next?'
-
-
-def submit_chat():
-    text = st.session_state.chat_input.strip()
-    if not text:
-        return
-    st.session_state.chat_messages.append({'sender': 'user', 'text': text, 'time': time.strftime('%I:%M %p')})
-    reply = get_reply(text)
-    st.session_state.chat_messages.append({'sender': 'bot', 'text': reply, 'time': time.strftime('%I:%M %p')})
-    st.session_state.chat_input = ''
+import time
+import asyncio
+from api_client import chat
 
 
 def render(locale):
-    ensure_chat_state(locale)
+    welcome = locale.get("chat", {}).get(
+        "welcome", "Hello! I'm Brihaspati, your bilingual coding assistant!"
+    )
 
-    st.markdown('<div class="chat-shell">', unsafe_allow_html=True)
-    if st.button('Chat' if not st.session_state.chat_open else 'Close', key='chat_toggle'):
-        st.session_state.chat_open = not st.session_state.chat_open
+    if "chatbot_msgs" not in st.session_state:
+        st.session_state.chatbot_msgs = [
+            {"sender": "bot", "text": welcome, "ts": time.time()}
+        ]
+    if "chatbot_open" not in st.session_state:
+        st.session_state.chatbot_open = False
+    if "chatbot_session" not in st.session_state:
+        st.session_state.chatbot_session = f"chatbot_{int(time.time())}"
+    if "chatbot_input_key" not in st.session_state:
+        st.session_state.chatbot_input_key = 0
+
+    btn_label = "✕ Close" if st.session_state.chatbot_open else "💬 Chat"
+    if st.button(btn_label, key="chatbot_toggle"):
+        st.session_state.chatbot_open = not st.session_state.chatbot_open
         st.rerun()
 
-    if st.session_state.chat_open:
+    if st.session_state.chatbot_open:
         st.markdown(
             """
-            <div class='chat-panel'>
-                <div style='display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 1rem; margin-bottom: 1rem;'>
-                    <div>
-                        <p style='font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.24em; color: #6ee7b7; margin: 0; font-family: Inter, sans-serif;'>CodeMentor AI</p>
-                        <h3 style='margin-top: 0.25rem; font-size: 1.125rem; font-weight: 600; color: #ffffff; margin-bottom: 0; font-family: Inter, sans-serif;'>AI Learning Assistant</h3>
+            <div style='position:fixed; bottom:5rem; right:1.5rem; width:360px; max-height:480px;
+                background:rgba(15,23,42,0.95); border:1px solid rgba(255,255,255,0.1);
+                border-radius:1rem; padding:1rem; z-index:999; overflow-y:auto;
+                box-shadow:0 20px 60px rgba(0,0,0,0.5);'>
+            """,
+            unsafe_allow_html=True,
+        )
+
+        for msg in st.session_state.chatbot_msgs:
+            is_bot = msg["sender"] == "bot"
+            align = "flex-start" if is_bot else "flex-end"
+            bg = "rgba(139,92,246,0.15)" if is_bot else "rgba(16,185,129,0.15)"
+            label = "Mentor" if is_bot else "You"
+            st.markdown(
+                f"""
+                <div style='display:flex; justify-content:{align}; margin-bottom:0.5rem;'>
+                    <div style='background:{bg}; border-radius:0.75rem; padding:0.5rem 0.75rem; max-width:85%;'>
+                        <strong style='font-size:0.7rem; color:#6ee7b7;'>{label}</strong>
+                        <div style='margin-top:0.2rem; font-size:0.875rem; color:#e2e8f0;'>{msg['text']}</div>
                     </div>
-                    <span style='display: inline-flex; height: 2.5rem; width: 2.5rem; align-items: center; justify-content: center; border-radius: 1rem; background: rgba(255, 255, 255, 0.05); font-size: 1.125rem;'>🤖</span>
                 </div>
-            """,
-            unsafe_allow_html=True,
-        )
+                """,
+                unsafe_allow_html=True,
+            )
 
-        messages_html = ""
-        for message in st.session_state.chat_messages:
-            if message['sender'] == 'bot':
-                bubble_style = "background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(255, 255, 255, 0.04); margin-bottom: 0.9rem; padding: 1rem; border-radius: 1.5rem; max-width: 85%;"
-                label = 'Mentor'
-            else:
-                bubble_style = "background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); color: #f1f5f9; margin-left: auto; max-width: 85%; margin-bottom: 0.9rem; padding: 1rem; border-radius: 1.5rem;"
-                label = 'You'
-            messages_html += f"""
-            <div style='{bubble_style}'>
-                <div style='font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(148, 163, 184, 0.9); font-weight: 600;'>{label}</div>
-                <div style='margin: 0.55rem 0 0; line-height: 1.6; font-size: 0.875rem;'>{message['text']}</div>
-            </div>
-            """
-        
-        st.markdown(
-            f"""
-            <div style='max-height: 300px; overflow-y: auto; display: flex; flex-direction: column; padding-right: 0.25rem; font-family: Inter, sans-serif;'>
-                {messages_html}
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        with st.form("chatbot_input", border=False):
+            text = st.text_input(
+                "Ask a question",
+                placeholder="Ask a question...",
+                label_visibility="collapsed",
+                key=f"chatbot_input_{st.session_state.chatbot_input_key}",
+            )
+            if st.form_submit_button("Send", use_container_width=True):
+                if text:
+                    st.session_state.chatbot_msgs.append(
+                        {"sender": "user", "text": text, "ts": time.time()}
+                    )
+                    lang_code = st.session_state.get("lang", "en")
+                    try:
+                        result = asyncio.run(
+                            chat(text, st.session_state.chatbot_session, lang_code)
+                        )
+                        reply = result.get("response", "")
+                    except Exception as e:
+                        reply = f"Error: {e}"
+                    st.session_state.chatbot_msgs.append(
+                        {"sender": "bot", "text": reply, "ts": time.time()}
+                    )
+                    st.session_state.chatbot_input_key += 1
+                    st.rerun()
 
-        with st.form('chat_form'):
-            st.text_input('Chat input', key='chat_input', placeholder='Ask a question or start a topic...', label_visibility='collapsed')
-            st.form_submit_button('Send', on_click=submit_chat)
-        st.markdown('</div>', unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
-
+        st.markdown("</div>", unsafe_allow_html=True)

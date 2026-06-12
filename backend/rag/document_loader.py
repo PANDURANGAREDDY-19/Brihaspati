@@ -6,13 +6,22 @@ logger = logging.getLogger("brihaspati.rag")
 
 
 class DocumentLoader:
-    SUPPORTED_EXTENSIONS = {".txt", ".md", ".py", ".js", ".json", ".yaml", ".yml", ".csv"}
+    SUPPORTED_EXTENSIONS = {
+        ".txt",
+        ".md",
+        ".py",
+        ".js",
+        ".json",
+        ".yaml",
+        ".yml",
+        ".csv",
+    }
 
     def __init__(self, datasets_path: str = "datasets"):
         self.datasets_path = Path(datasets_path)
 
     def load_all(self) -> list[dict]:
-        documents = []
+        documents: list[dict] = []
         for ext in self.SUPPORTED_EXTENSIONS:
             documents.extend(self._load_by_extension(ext))
         logger.info(f"Loaded {len(documents)} documents from datasets")
@@ -23,7 +32,7 @@ class DocumentLoader:
         if not dir_path.exists():
             logger.warning(f"Directory {directory} does not exist")
             return []
-        documents = []
+        documents: list[dict] = []
         for file_path in dir_path.rglob("*"):
             if file_path.suffix in self.SUPPORTED_EXTENSIONS and file_path.is_file():
                 doc = self._load_file(file_path)
@@ -32,7 +41,7 @@ class DocumentLoader:
         return documents
 
     def _load_by_extension(self, extension: str) -> list[dict]:
-        documents = []
+        documents: list[dict] = []
         if not self.datasets_path.exists():
             return documents
         for file_path in self.datasets_path.rglob(f"*{extension}"):

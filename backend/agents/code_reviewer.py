@@ -2,12 +2,15 @@ import logging
 from typing import Optional
 from backend.agents.base_agent import BaseAgent
 from backend.services.ollama_service import OllamaService
+from backend.config import settings
 
 logger = logging.getLogger("brihaspati.agents")
 
 
 class CodeReviewerAgent(BaseAgent):
-    def __init__(self, ollama_service: OllamaService, model: str = "codellama:7b"):
+    def __init__(
+        self, ollama_service: OllamaService, model: str = settings.ollama_default_model
+    ):
         super().__init__(
             name="code_reviewer",
             ollama_service=ollama_service,

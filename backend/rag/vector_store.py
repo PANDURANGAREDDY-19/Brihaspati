@@ -38,7 +38,10 @@ class VectorStore:
 
         texts = [doc["content"] for doc in documents]
         metadatas = [doc.get("metadata", {}) for doc in documents]
-        ids = [f"doc_{i}_{metadatas[i].get('filename', 'unknown')}" for i in range(len(documents))]
+        ids = [
+            f"doc_{i}_{metadatas[i].get('filename', 'unknown')}"
+            for i in range(len(documents))
+        ]
 
         if self.ollama:
             embeddings = []
@@ -72,16 +75,22 @@ class VectorStore:
         return self._format_results(results)
 
     def _format_results(self, results) -> list[dict]:
-        formatted = []
+        formatted: list[dict] = []
         if not results or not results.get("documents"):
             return formatted
 
         for i in range(len(results["documents"][0])):
-            formatted.append({
-                "content": results["documents"][0][i],
-                "metadata": results["metadatas"][0][i] if results.get("metadatas") else {},
-                "distance": results["distances"][0][i] if results.get("distances") else 0,
-            })
+            formatted.append(
+                {
+                    "content": results["documents"][0][i],
+                    "metadata": results["metadatas"][0][i]
+                    if results.get("metadatas")
+                    else {},
+                    "distance": results["distances"][0][i]
+                    if results.get("distances")
+                    else 0,
+                }
+            )
         return formatted
 
     def is_ready(self) -> bool:

@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     workers: int = 4
 
     ollama_host: str = "http://localhost:11434"
-    ollama_default_model: str = "llama3.1:8b"
+    ollama_default_model: str = "qwen2.5:1.5b"
     ollama_embedding_model: str = "nomic-embed-text"
     ollama_timeout: int = 120
 

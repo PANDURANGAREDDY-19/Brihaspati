@@ -4,7 +4,7 @@ from data.mock import course_categories
 
 
 def render(locale):
-    cols = st.columns([1.2, 0.8], gap='large')
+    cols = st.columns([1.2, 0.8], gap="large")
     with cols[0]:
         st.markdown(
             """
@@ -16,18 +16,18 @@ def render(locale):
             """,
             unsafe_allow_html=True,
         )
-        btn_cols = st.columns([1.2, 1.4, 4.0], gap='small')
+        btn_cols = st.columns([1.2, 1.4, 4.0], gap="small")
         with btn_cols[0]:
             st.markdown("<div class='hero-primary-btn'>", unsafe_allow_html=True)
             if st.button("Start Learning", key="hero_start"):
-                st.session_state.page = 'practice'
-                st.experimental_rerun()
+                st.session_state.page = "practice"
+                st.rerun()
             st.markdown("</div>", unsafe_allow_html=True)
         with btn_cols[1]:
             st.markdown("<div class='hero-ghost-btn'>", unsafe_allow_html=True)
             if st.button("Explore Courses", key="hero_explore"):
-                st.session_state.page = 'courses'
-                st.experimental_rerun()
+                st.session_state.page = "courses"
+                st.rerun()
             st.markdown("</div>", unsafe_allow_html=True)
 
     with cols[1]:
@@ -38,7 +38,7 @@ def render(locale):
                 <h2 style='margin-top: 1rem; font-size: 1.875rem; font-weight: 600; color: #ffffff;'>From beginner to confident learner.</h2>
                 <p style='margin-top: 1rem; color: #cbd5e1; margin-bottom: 0;'>Flexible lessons, guided practice, and progress tracking designed for every learner.</p>
             </div>
-            
+
             <div class='glass-panel card p-8'>
                 <div style='display: flex; justify-content: space-between; align-items: center; gap: 1rem;'>
                     <div>
@@ -75,8 +75,12 @@ def render(locale):
         unsafe_allow_html=True,
     )
 
-    cols = st.columns(3, gap='large')
+    cols = st.columns(3, gap="large")
     for idx, category in enumerate(course_categories):
         with cols[idx]:
-            render_course_card(category['title'], category['description'], category['topics'], category['accent'])
-
+            render_course_card(
+                category["title"],
+                category["description"],
+                category["topics"],
+                category["accent"],
+            )

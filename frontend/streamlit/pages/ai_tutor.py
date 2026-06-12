@@ -1,48 +1,119 @@
 import streamlit as st
 import time
+import asyncio
 from components.ui import chat_bubble, render_page_header
+from api_client import chat
 
 SUGGESTED = [
-    'Explain recursion.',
-    'What is OOP?',
-    'How do dictionaries work?'
+    "Explain recursion in Python",
+    "What is object-oriented programming?",
+    "How do Python dictionaries work?",
 ]
-MOCK = {
-    'Explain recursion.': 'Recursion solves problems by calling the same function with smaller inputs. Always include a base case.',
-    'What is OOP?': 'Object-oriented programming models code with objects and classes for encapsulation.',
-    'How do dictionaries work?': 'Dictionaries map keys to values using hashing for fast lookup.'
-}
+
+SESSION_KEY = "brihaspati_session_id"
+
+
+def get_session_id():
+    if SESSION_KEY not in st.session_state:
+        st.session_state[SESSION_KEY] = f"streamlit_{int(time.time())}"
+    return st.session_state[SESSION_KEY]
+
 
 def render(locale):
-    render_page_header(locale['ai_tutor']['title'], locale['ai_tutor']['subtitle'])
+    render_page_header(locale["ai_tutor"]["title"], locale["ai_tutor"]["subtitle"])
 
-    if 'chat' not in st.session_state:
-        st.session_state.chat = [{'sender': locale['ai_tutor']['ai_label'], 'text': locale['ai_tutor']['welcome'], 'ts': time.time()}]
+    if "chat" not in st.session_state:
+        st.session_state.chat = [
+            {
+                "sender": locale["ai_tutor"]["ai_label"],
+                "text": locale["ai_tutor"]["welcome"],
+                "ts": time.time(),
+            }
+        ]
+    if "tutor_input_key" not in st.session_state:
+        st.session_state.tutor_input_key = 0
 
-    cols = st.columns([3,1], gap='large')
+    cols = st.columns([3, 1], gap="large")
     with cols[0]:
-        st.markdown("<div class='card chat-container'>", unsafe_allow_html=True)
+        st.markdown(
+            "<div class='glass-panel' style='padding:1rem; border-radius:1rem; margin-bottom:1rem;'>",
+            unsafe_allow_html=True,
+        )
         for msg in st.session_state.chat:
-            chat_bubble(msg['sender'], msg['text'], ai=(msg['sender']==locale['ai_tutor']['ai_label']), ts=time.strftime('%H:%M', time.localtime(msg.get('ts',0))))
+            chat_bubble(
+                msg["sender"],
+                msg["text"],
+                ai=(msg["sender"] == locale["ai_tutor"]["ai_label"]),
+                ts=time.strftime("%H:%M", time.localtime(msg.get("ts", 0))),
+            )
         st.markdown("</div>", unsafe_allow_html=True)
 
-        with st.form('chat'):
-            choice = st.selectbox(locale['ai_tutor']['language'], ['Python','JavaScript','C'])
-            text = st.text_input(locale['ai_tutor']['placeholder'])
-            submit = st.form_submit_button(locale['ai_tutor']['send'])
+        with st.form("chat"):
+            st.selectbox(
+                locale["ai_tutor"]["language"], ["Python", "JavaScript", "Java", "C++"]
+            )
+            text = st.text_input(
+                locale["ai_tutor"]["placeholder"],
+                key=f"tutor_input_{st.session_state.tutor_input_key}",
+            )
+            submit = st.form_submit_button(locale["ai_tutor"]["send"])
+
             if submit and text:
-                st.session_state.chat.append({'sender': locale['ai_tutor']['user_label'], 'text': text, 'ts': time.time()})
-                # mock response
-                resp = MOCK.get(text, 'Great question! Here is a helpful mock response to guide your practice.')
-                st.session_state.chat.append({'sender': locale['ai_tutor']['ai_label'], 'text': resp, 'ts': time.time()})
+                lang_code = st.session_state.get("lang", "en")
+                st.session_state.chat.append(
+                    {
+                        "sender": locale["ai_tutor"]["user_label"],
+                        "text": text,
+                        "ts": time.time(),
+                    }
+                )
+                with st.spinner("Thinking..."):
+                    try:
+                        result = asyncio.run(chat(text, get_session_id(), lang_code))
+                        reply = result.get("response", "No response from backend.")
+                    except Exception as e:
+                        reply = f"Error: {e}"
+                st.session_state.chat.append(
+                    {
+                        "sender": locale["ai_tutor"]["ai_label"],
+                        "text": reply,
+                        "ts": time.time(),
+                    }
+                )
+                st.session_state.tutor_input_key += 1
                 st.rerun()
 
     with cols[1]:
-        st.markdown("<div class='card'>", unsafe_allow_html=True)
-        st.markdown(f"<div class='section-title'>{locale['ai_tutor']['suggested']}</div>", unsafe_allow_html=True)
+        st.markdown(
+            "<div class='glass-panel' style='padding:1rem; border-radius:1rem;'>",
+            unsafe_allow_html=True,
+        )
+        st.markdown(
+            f"<div style='font-weight:600; margin-bottom:0.75rem;'>{locale['ai_tutor']['suggested']}</div>",
+            unsafe_allow_html=True,
+        )
         for s in SUGGESTED:
-            if st.button(s, key=s):
-                st.session_state.chat.append({'sender': locale['ai_tutor']['user_label'], 'text': s, 'ts': time.time()})
-                st.session_state.chat.append({'sender': locale['ai_tutor']['ai_label'], 'text': MOCK.get(s,''), 'ts': time.time()})
+            if st.button(s, key=s, use_container_width=True):
+                lang_code = st.session_state.get("lang", "en")
+                st.session_state.chat.append(
+                    {
+                        "sender": locale["ai_tutor"]["user_label"],
+                        "text": s,
+                        "ts": time.time(),
+                    }
+                )
+                with st.spinner("Thinking..."):
+                    try:
+                        result = asyncio.run(chat(s, get_session_id(), lang_code))
+                        reply = result.get("response", "No response.")
+                    except Exception as e:
+                        reply = f"Error: {e}"
+                st.session_state.chat.append(
+                    {
+                        "sender": locale["ai_tutor"]["ai_label"],
+                        "text": reply,
+                        "ts": time.time(),
+                    }
+                )
                 st.rerun()
         st.markdown("</div>", unsafe_allow_html=True)

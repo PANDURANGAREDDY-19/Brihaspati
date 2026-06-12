@@ -4,12 +4,15 @@ from backend.agents.base_agent import BaseAgent
 from backend.services.ollama_service import OllamaService
 from backend.services.translation_service import TranslationService
 from backend.models.enums import Language
+from backend.config import settings
 
 logger = logging.getLogger("brihaspati.agents")
 
 
 class BilingualAgent(BaseAgent):
-    def __init__(self, ollama_service: OllamaService, model: str = "llama3.1:8b"):
+    def __init__(
+        self, ollama_service: OllamaService, model: str = settings.ollama_default_model
+    ):
         super().__init__(
             name="bilingual_agent",
             ollama_service=ollama_service,

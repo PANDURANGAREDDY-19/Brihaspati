@@ -1,54 +1,40 @@
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react'
+import { chat as apiChat } from '../services/api'
 
 type Message = {
   sender: 'bot' | 'user'
   text: string
 }
 
-const initialMessages: Message[] = [
-  {
-    sender: 'bot',
-    text: "Hello! I'm CodeMentor AI. How can I help you learn Programming, English, or Telugu today?",
-  },
-]
-
-const botReplies: { keywords: string[]; text: string }[] = [
-  {
-    keywords: ['python', 'java', 'cplusplus', 'javascript', 'html', 'css', 'c++', 'c'],
-    text: 'I can help you explore syntax, write sample code, or compare programming topics. What would you like to practice first?',
-  },
-  {
-    keywords: ['grammar', 'vocabulary', 'speaking', 'writing', 'reading'],
-    text: 'Let’s build your language skills with clear examples and practice questions. Which area should we focus on?',
-  },
-  {
-    keywords: ['telugu', 'telugu grammar', 'spoke', 'reading'],
-    text: 'Telugu learning is fun with structured exercises. I can help you practice reading, writing, and vocabulary.',
-  },
-]
-
 function Chatbot() {
   const [open, setOpen] = useState(false)
   const [input, setInput] = useState('')
-  const [messages, setMessages] = useState<Message[]>(initialMessages)
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      sender: 'bot',
+      text: "Hello! I'm CodeMentor AI. How can I help you learn Programming, English, or Telugu today?",
+    },
+  ])
   const [sending, setSending] = useState(false)
   const scrollRef = useRef<HTMLDivElement | null>(null)
+  const sessionId = useRef(`webui_${Date.now()}`)
 
-  const handleSend = () => {
+  const handleSend = async () => {
     const trimmed = input.trim()
-    if (!trimmed) return
-    const userMessage: Message = { sender: 'user', text: trimmed }
-    setMessages((prev) => [...prev, userMessage])
+    if (!trimmed || sending) return
     setInput('')
+    setMessages((prev) => [...prev, { sender: 'user', text: trimmed }])
     setSending(true)
 
-    setTimeout(() => {
-      const lower = trimmed.toLowerCase()
-      const reply = botReplies.find((item) => item.keywords.some((keyword) => lower.includes(keyword)))?.text ??
-        'That sounds great. I can guide you with course recommendations, practice suggestions, and quick concept explanations. What would you like to do next?'
-      setMessages((prev) => [...prev, { sender: 'bot', text: reply }])
+    try {
+      const lang = document.documentElement.lang === 'te' ? 'te' : 'en'
+      const result = await apiChat({ message: trimmed, session_id: sessionId.current, language: lang })
+      setMessages((prev) => [...prev, { sender: 'bot', text: result.response }])
+    } catch (e) {
+      setMessages((prev) => [...prev, { sender: 'bot', text: `Error: ${e instanceof Error ? e.message : e}` }])
+    } finally {
       setSending(false)
-    }, 650)
+    }
   }
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
@@ -83,6 +69,12 @@ function Chatbot() {
                 <p className="mt-2 leading-6">{message.text}</p>
               </div>
             ))}
+            {sending && (
+              <div className="rounded-3xl bg-slate-900/90 p-4">
+                <p className="text-xs uppercase tracking-[0.2em] text-slate-400">Mentor</p>
+                <p className="mt-2 leading-6 text-slate-400">Thinking...</p>
+              </div>
+            )}
           </div>
 
           <div className="border-t border-white/10 px-4 py-4">

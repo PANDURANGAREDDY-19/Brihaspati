@@ -4,13 +4,27 @@ from backend.agents.base_agent import BaseAgent
 from backend.services.ollama_service import OllamaService
 from backend.services.session_manager import SessionManager
 from backend.models.enums import Language
+from backend.config import settings
 
 logger = logging.getLogger("brihaspati.agents")
 
 
-LANGUAGE_PREFIXES = {
-    Language.ENGLISH: "Please respond in English.",
-    Language.TELUGU: "దయచేసి తెలుగులో సమాధానం ఇవ్వండి.",
+LANGUAGE_PROMPTS = {
+    Language.ENGLISH: {
+        "instruction": "IMPORTANT: You MUST respond entirely in English.",
+        "reminder": "Remember: Your entire response must be in English only.",
+    },
+    Language.TELUGU: {
+        "instruction": (
+            "చివరి సూచన: మీరు తెలుగులో మాత్రమే సమాధానం ఇవ్వాలి.\n"
+            "కోడ్ ఉదాహరణలు మాత్రమే ఆంగ్లంలో ఉండవచ్చు.\n"
+            "మొదట తెలుగులో వివరించండి, తరువాత కోడ్ చూపించండి.\n"
+            "ఉదాహరణ:\n"
+            "ప్ర: What is a variable?\n"
+            "తెలుగు సమాధానం: వేరియబుల్ అనేది డేటాను నిల్వ చేయడానికి ఉపయోగించే ఒక కంటైనర్. ఇది కంప్యూటర్ మెమరీలో ఒక స్థానాన్ని సూచిస్తుంది."
+        ),
+        "reminder": "గుర్తుంచుకోండి: మీరు తెలుగులో మాత్రమే సమాధానం రాయాలి. ఇంగ్లీష్ పదాలు ఉపయోగించకండి.",
+    },
 }
 
 
@@ -19,7 +33,7 @@ class CodingTutorAgent(BaseAgent):
         self,
         ollama_service: OllamaService,
         session_manager: SessionManager,
-        model: str = "llama3.1:8b",
+        model: str = settings.ollama_default_model,
     ):
         super().__init__(
             name="coding_tutor",
@@ -38,14 +52,16 @@ class CodingTutorAgent(BaseAgent):
         history = self.session_manager.get_history(session_id, limit=6)
         history_text = self._format_history(history)
 
-        lang_instruction = LANGUAGE_PREFIXES.get(language, LANGUAGE_PREFIXES[Language.ENGLISH])
+        lang = LANGUAGE_PROMPTS.get(language, LANGUAGE_PROMPTS[Language.ENGLISH])
 
-        prompt = f"""{lang_instruction}
+        prompt = f"""{lang['instruction']}
 
 Previous conversation:
 {history_text}
 
 Student's question: {message}
+
+{lang['reminder']}
 
 Provide a clear, educational explanation with code examples where appropriate."""
 
