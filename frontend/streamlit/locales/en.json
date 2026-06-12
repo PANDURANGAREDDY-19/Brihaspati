@@ -1,12 +1,10 @@
 {
   "nav": {
-    "home": "Dashboard",
-    "ai_tutor": "AI Tutor",
-    "debugger": "Smart Debugger",
-    "quiz_arena": "Quiz Arena",
-    "challenges": "Challenges",
-    "code_review": "Code Review Studio",
-    "settings": "Settings"
+    "home": "Home",
+    "courses": "Courses",
+    "dashboard": "Dashboard",
+    "practice": "Practice",
+    "about": "About"
   },
   "home": {
     "title": "Learn Coding with AI",

@@ -2,22 +2,18 @@ import streamlit as st
 
 NAV_ORDER = [
     "home",
-    "ai_tutor",
-    "debugger",
-    "quiz_arena",
-    "challenges",
-    "code_review",
-    "settings",
+    "courses",
+    "dashboard",
+    "practice",
+    "about",
 ]
 
 ICONS = {
     "home": "🏠",
-    "ai_tutor": "💬",
-    "debugger": "🐞",
-    "quiz_arena": "🧠",
-    "challenges": "⚔️",
-    "code_review": "🔎",
-    "settings": "⚙️",
+    "courses": "🎓",
+    "dashboard": "📊",
+    "practice": "🧪",
+    "about": "ℹ️",
 }
 
 
