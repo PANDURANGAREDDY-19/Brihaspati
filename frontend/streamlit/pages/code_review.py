@@ -1,84 +1,103 @@
 import streamlit as st
 import asyncio
-from components.ui import render_page_header, render_section_header
+from components.ui import render_page_header
 from api_client import review_code
 
 
 def render(locale):
     render_page_header(locale["review"]["title"], locale["review"]["subtitle"])
 
-    code = st.text_area("Paste your code", value="# Paste your code here", height=320)
+    code = st.text_area(
+        locale["review"]["paste"], value="# Paste your code here", height=300
+    )
     lang = st.selectbox("Language", ["python", "javascript", "java", "cpp"])
 
-    if st.button(locale["review"]["analyze"], type="primary"):
-        with st.spinner("Reviewing code..."):
+    col_btn, _ = st.columns([1, 3])
+    with col_btn:
+        run = st.button(
+            locale["review"]["analyze"], type="primary", use_container_width=True
+        )
+
+    if run:
+        if not code.strip() or code.strip() == "# Paste your code here":
+            st.warning("Please paste some code before reviewing.")
+            return
+        with st.spinner("Reviewing code…"):
             try:
                 result = asyncio.run(review_code(code, lang))
-                summary = result.get("summary", "")
-
-                st.markdown(
-                    "<div class='glass-panel' style='padding:1rem; border-radius:1rem; margin-top:1rem;'>",
-                    unsafe_allow_html=True,
-                )
-                render_section_header("Review Results")
-                if summary:
-                    st.markdown(
-                        f"<div style='margin-top:0.5rem;'>{summary}</div>",
-                        unsafe_allow_html=True,
-                    )
-
-                issues = result.get("issues", [])
-                if issues:
-                    st.markdown(
-                        "<div style='margin-top:1rem;'>", unsafe_allow_html=True
-                    )
-                    render_section_header("Issues Found")
-                    for issue in issues:
-                        msg = (
-                            issue.get("message", issue)
-                            if isinstance(issue, dict)
-                            else issue
-                        )
-                        sev = (
-                            issue.get("severity", "info")
-                            if isinstance(issue, dict)
-                            else "info"
-                        )
-                        icon = {
-                            "critical": "🔴",
-                            "major": "🟡",
-                            "minor": "🔵",
-                            "info": "ℹ️",
-                        }.get(sev, "ℹ️")
-                        st.markdown(
-                            f"<div style='margin-bottom:0.3rem;'>{icon} {msg}</div>",
-                            unsafe_allow_html=True,
-                        )
-                    st.markdown("</div>", unsafe_allow_html=True)
-
-                suggestions = result.get("suggestions", [])
-                if suggestions:
-                    st.markdown(
-                        "<div style='margin-top:1rem;'>", unsafe_allow_html=True
-                    )
-                    render_section_header("Suggestions")
-                    for s in suggestions:
-                        st.markdown(
-                            f"<div style='margin-bottom:0.3rem;'>💡 {s}</div>",
-                            unsafe_allow_html=True,
-                        )
-                    st.markdown("</div>", unsafe_allow_html=True)
-
-                corrected = result.get("corrected_code")
-                if corrected:
-                    st.markdown(
-                        "<div style='margin-top:1rem;'>", unsafe_allow_html=True
-                    )
-                    render_section_header("Corrected Code")
-                    st.code(corrected, language=lang)
-                    st.markdown("</div>", unsafe_allow_html=True)
-
-                st.markdown("</div>", unsafe_allow_html=True)
-
             except Exception as e:
                 st.error(f"Review failed: {e}")
+                return
+
+        summary = result.get("summary", "")
+        issues = result.get("issues", [])
+        suggestions = result.get("suggestions", [])
+        corrected = result.get("corrected_code")
+
+        # ── Summary ──
+        if summary:
+            st.markdown(
+                f"""
+                <div class="result-panel">
+                    <div class="result-section">
+                        <h4>Review Summary</h4>
+                        <div class="body">{summary}</div>
+                    </div>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+
+        # ── Issues ──
+        if issues:
+            issue_rows = "".join(
+                f"""<div class="issue-row">
+                        <span>{"🔴" if isinstance(i,dict) and i.get("severity") in ("critical","major") else "🔵"}</span>
+                        <span>{i.get("message", i) if isinstance(i, dict) else i}</span>
+                    </div>"""
+                for i in issues
+            )
+            st.markdown(
+                f"""
+                <div class="result-panel">
+                    <div class="result-section">
+                        <h4>Issues Found</h4>
+                        {issue_rows}
+                    </div>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+
+        # ── Suggestions ──
+        if suggestions:
+            sug_rows = "".join(
+                f'<div class="suggestion-row"><span>💡</span><span>{s}</span></div>'
+                for s in suggestions
+            )
+            st.markdown(
+                f"""
+                <div class="result-panel">
+                    <div class="result-section">
+                        <h4>Suggestions</h4>
+                        {sug_rows}
+                    </div>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+
+        # ── Corrected code ──
+        if corrected:
+            st.markdown(
+                """
+                <div class="result-panel">
+                    <div class="result-section"><h4>Corrected Code</h4></div>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+            st.code(corrected, language=lang)
+
+        if not any([summary, issues, suggestions, corrected]):
+            st.info("No issues found. Your code looks good!")

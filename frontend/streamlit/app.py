@@ -42,32 +42,31 @@ def ensure_state():
 
 
 def render_header(locale):
-    cols = st.columns([0.65, 0.35], gap="large", vertical_alignment="center")
-    with cols[0]:
+    col_brand, col_search = st.columns(
+        [0.65, 0.35], gap="large", vertical_alignment="center"
+    )
+    with col_brand:
         st.markdown(
             """
-            <div class='top-brand' style='display: flex; align-items: center; gap: 1rem;'>
-                <div class='brand-mark' style='background: linear-gradient(135deg, #8b5cf6, #10b981); width: 48px; height: 48px; border-radius: 24px; display: grid; place-items: center; color: #ffffff; font-weight: 700; font-size: 1.25rem; box-shadow: 0 10px 20px rgba(139, 92, 246, 0.2);'>CM</div>
+            <div class="brand-bar">
+                <div class="brand-mark">CM</div>
                 <div>
-                    <p class='brand-overline' style='margin: 0; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.3em; color: #6ee7b7;'>CodeMentor AI</p>
-                    <h1 class='brand-title' style='margin: 0.25rem 0 0; font-size: 1.75rem; font-weight: 600; color: #ffffff;'>Learn. Practice. Build. Grow.</h1>
+                    <p class="brand-overline">CodeMentor AI · Brihaspati</p>
+                    <h1 class="brand-title">Learn. Practice. Build. Grow.</h1>
                 </div>
             </div>
             """,
             unsafe_allow_html=True,
         )
-    with cols[1]:
+    with col_search:
         st.text_input(
             "Search",
             key="search_query",
-            placeholder="Search courses, topics, lessons",
+            placeholder="Search courses, topics, lessons…",
             label_visibility="collapsed",
         )
 
-    st.markdown(
-        "<div style='border-bottom: 1px solid rgba(255, 255, 255, 0.1); margin: 1.5rem 0;'></div>",
-        unsafe_allow_html=True,
-    )
+    st.markdown("<div class='divider'></div>", unsafe_allow_html=True)
 
     nav_labels = locale.get("nav", {})
     nav_cols = st.columns(len(NAV_ORDER), gap="small")
@@ -83,7 +82,7 @@ def render_header(locale):
 
 def main():
     st.set_page_config(
-        page_title="CodeMentor AI",
+        page_title="Brihaspati · CodeMentor AI",
         page_icon="🤖",
         layout="wide",
         initial_sidebar_state="collapsed",
